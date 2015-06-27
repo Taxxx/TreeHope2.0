@@ -82,3 +82,4 @@ app.get('/article/:id', home);
 
 
 server.listen(3000);
+console.log('escuchando puerto 3000');
