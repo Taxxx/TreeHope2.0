@@ -1,17 +1,17 @@
-Puls3.Views.Article = Backbone.View.extend({
+TreeHope.Views.Post = Backbone.View.extend({
 	events:{
 		"click .acciones .votos .up" : "upvote",
 		"click .acciones .votos .down" : "downvote",
 		"click" : "navigate" 
 	},
-	tagName: "article",
+	tagName: "post",
 	className: "post",
 	initialize: function(){
 		//debugger;
 		var self = this;
 		//cambio modelo
 		this.model.on('change', function(){
-			if(window.app.state === "articleSingle"){
+			if(window.app.state === "postSingle"){
 				self.extendedRender();
 			}else{
 				self.render();
@@ -23,8 +23,8 @@ Puls3.Views.Article = Backbone.View.extend({
 			self.render();
 		});
 
-		window.routers.base.on('route:articleSingle', function(){
-			if(window.app.article === self.model.get('id')){
+		window.routers.base.on('route:postSingle', function(){
+			if(window.app.post === self.model.get('id')){
 				//Muestra version extendida
 				self.extendedRender();
 			}else{
@@ -33,15 +33,16 @@ Puls3.Views.Article = Backbone.View.extend({
 		});
 
 		//cargar templates
-		this.template = _.template($("#article-template").html());
-		//this.template = swig.compile($('#article-template').html());
-		this.extendedtemplate = _.template($("#article-extended-template").html());
+		this.template = _.template($("#post-template").html());
+		//this.template = swig.compile($('#post-template').html());
+		this.extendedtemplate = _.template($("#post-extended-template").html());
 	},
 	render: function(){
 		var data = this.model.toJSON();
 		//junto data con template
 		var html = this.template(data);
-
+		//debugger;
+		//console.log('Chequemos el data --> '+data);
 		this.$el.html(html);
 	},
 	extendedRender: function(){
@@ -69,6 +70,6 @@ Puls3.Views.Article = Backbone.View.extend({
 		this.model.save();
 	},
 	navigate: function(){
-		Backbone.history.navigate('/article/'+this.model.get('id'), {trigger:true});
+		Backbone.history.navigate('/post/'+this.model.get('id'), {trigger:true});
 	}
 });

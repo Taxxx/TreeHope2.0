@@ -1,7 +1,7 @@
-Puls3.Views.App = Backbone.View.extend({
+TreeHope.Views.App = Backbone.View.extend({
 	events: {
 		"click .publicar" : "showForm",
-		"submit form" : "createArticle",
+		"submit form" : "createPost",
 		"click .logo" : "navigateHome"
 	},
 	initialize: function($el){
@@ -10,7 +10,7 @@ Puls3.Views.App = Backbone.View.extend({
 	showForm: function(){
 		this.$el.find('form').show();
 	},
-	createArticle: function(e){
+	createPost: function(e){
 		e.preventDefault();
 
 		var titulo = $('input[name=titulo]').val();
@@ -25,7 +25,7 @@ Puls3.Views.App = Backbone.View.extend({
 			"votes" : 0
 		};
 
-		var model = new Puls3.Models.Article(data);
+		var model = new TreeHope.Models.Post(data);
 
 		model.save();
 	},

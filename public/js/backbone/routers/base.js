@@ -1,18 +1,18 @@
-Puls3.Routers.Base = Backbone.Router.extend({
+TreeHope.Routers.Base = Backbone.Router.extend({
 	routes : {
 		"" : "root",
-		"article/:id" : "articleSingle"
+		"post/:id" : "postSingle"
 	},
 	root: function(){
 		console.log('Estamos en el root de la app');
 
 		window.app.state = "root";
-		window.app.article = null;
+		window.app.post = null;
 	},
-	articleSingle: function(id){
-		console.log('Estamos en articleSingle');
+	postSingle: function(id){
+		console.log('Estamos en postSingle');
 
-		window.app.state = "articleSingle";
-		window.app.article = id;
+		window.app.state = "postSingle";
+		window.app.post = id;
 	}
 });

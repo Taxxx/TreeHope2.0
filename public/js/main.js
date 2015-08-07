@@ -7,28 +7,28 @@ $(document).ready(function(){
 	});
 
 	window.ponyExpress.bind('connect', function(){
-		window.plugs.article = new PonyExpress.BackbonePlug({
-			collection : window.collections.articles
+		window.plugs.Post = new PonyExpress.BackbonePlug({
+			collection : window.collections.Posts
 		});
 	});
 	//cargo vistas
-	window.views.app = new Puls3.Views.App( $('body') );
+	window.views.app = new TreeHope.Views.App( $('body') );
 	//cargo routes
-	window.routers.base = new Puls3.Routers.Base();
+	window.routers.base = new TreeHope.Routers.Base();
 	//cargo collections
-	window.collections.articles = new Puls3.Collections.Articles();
+	window.collections.Posts = new TreeHope.Collections.Posts();
 
-	//adiciono nuevo article
-	window.collections.articles.on('add', function(model){
+	//adiciono nuevo Post
+	window.collections.Posts.on('add', function(model){
 		//agregar nuevas vistas de articulos
-		var view = new Puls3.Views.Article({model: model});
+		var view = new TreeHope.Views.Post({model: model});
 
 		view.render();
 		//view.$el.prependTo('.posts');
 		$('.posts').prepend(view.$el);
 	});
 	// carga de mi base de datos fake
-	var xhr = window.collections.articles.fetch();
+	var xhr = window.collections.Posts.fetch();
 	xhr.done(function(){
 		Backbone.history.start({
 			root: '/',

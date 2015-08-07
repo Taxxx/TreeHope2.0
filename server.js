@@ -2,7 +2,22 @@ var express = require('express'),
 	swig    = require('swig'),
 	cons    = require('consolidate'),
 	fs      = require('fs'),
-	uuid    = require('node-uuid');
+	uuid    = require('node-uuid'),
+	mongoose = require('mongoose'),
+	database = require('./config/database'),
+	Post = require('./app/models/post');
+
+
+
+// configuration ===============================================================
+mongoose.connect(database.url, function(err, res){
+	if(err) {
+		console.log('ERROR: connecting to Database. ' + err);
+	} else {
+		console.log('Connected to Database');
+	}
+}); 	// connect to mongoDB database on modulus.io
+
 
 var env = "dev";
 //var env = "prod";
@@ -32,45 +47,68 @@ app.use(express.methodOverride());
 app.use( express.static('./public') );
 
 // Routes
-app.get('/articles/', function(req, res){
+app.get('/posts/', function(req, res){
 	res.send(data);
 });
 
-app.post('/articles', function (req, res){
+app.post('/posts', function (req, res){
 	req.body.id = uuid.v1();
 	//req.body.votes = 0;
 	//req.body.image = "/img/img3.jpg";
 	//req.body.user  = "Siedrix";
 
-	data.push(req.body);
+	// create a todo, information comes from AJAX request from Angular
+		debugger;
+		Post.create({
+			id 		 : req.body.id,
+			title 	 : req.body.title,
+			image 	 : req.body.image,
+			username : req.body.username,
+			tag 	 : req.body.tag,
+			votes 	 : req.body.votes,
+			content  : req.body.content,
+			done : false
+		}, 
+		function(err, post) {
+			if (err)
+				res.send(err);
 
-	console.log('articles::create', req.body);
+			console.log('Verifiquemos la base de datos!!');
+			// get and return all the todos after you create another
+			//getTodos(res);
+			data.push(req.body);
 
-	io.sockets.emit('articles::create', req.body);
+			console.log('posts::create', req.body);
 
-	res.send(200, {status:"Ok", id: req.body.id});
+			io.sockets.emit('posts::create', req.body);
+
+			res.send(200, {status:"Ok", id: req.body.id});
+		});
+
+	
 });
 
-app.put('/articles/', function (req, res){
+app.put('/posts/', function (req, res){
 	console.log('Updating', req.body);
-	var article;
+	var post;
 
 	for (var i = data.length - 1; i >= 0; i--) {
-		article = data[i];
+		post = data[i];
 
-		if(article.id === req.body.id){
+		if(post.id === req.body.id){
 			data[i] = req.body;
 		}
 	}
 
-	console.log('articles::update', req.body);
+	console.log('posts::update', req.body);
 
-	io.sockets.emit('articles::update', req.body);
+	io.sockets.emit('posts::update', req.body);
 
 	res.send(200, {status:"Ok"});
 });
 
 var home = function (req, res) {
+	//debugger;
 	res.render('index',{
 		posts : data,
 		env   : env
@@ -78,7 +116,7 @@ var home = function (req, res) {
 };
 
 app.get('/', home);
-app.get('/article/:id', home);
+app.get('/post/:id', home);
 
 
 server.listen(3000);

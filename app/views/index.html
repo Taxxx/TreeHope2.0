@@ -23,9 +23,9 @@
 
     <script src="/js/init.js"></script>
     
-    <script src="/js/backbone/models/article.js"></script>
-    <script src="/js/backbone/collections/articles.js"></script>
-    <script src="/js/backbone/views/article-view.js"></script>
+    <script src="/js/backbone/models/post.js"></script>
+    <script src="/js/backbone/collections/posts.js"></script>
+    <script src="/js/backbone/views/post-view.js"></script>
     <script src="/js/backbone/views/app.js"></script>
 
     <script src="/js/backbone/routers/base.js"></script>
@@ -92,7 +92,7 @@
         </h3>
     </footer>
     <!--{% raw %}-->
-    <script type="text/template" id="article-template">
+    <script type="text/template" id="post-template">
         <div class="descripcion">
             <figure class="imagen">
                 <img src="<%= image %>" />
@@ -122,7 +122,7 @@
     </script>
     <!--{% endraw %}-->
 
-    <script type="text/template" id="article-extended-template">
+    <script type="text/template" id="post-extended-template">
         <div class="descripcion extended">
             <figure class="imagen">
                 <img src="<%= image %>" />

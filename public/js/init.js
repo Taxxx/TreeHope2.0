@@ -1,9 +1,9 @@
-window.Puls3 = {};
+window.TreeHope = {};
 
-Puls3.Views = {};
-Puls3.Collections = {};
-Puls3.Models = {};
-Puls3.Routers = {};
+TreeHope.Views = {};
+TreeHope.Collections = {};
+TreeHope.Models = {};
+TreeHope.Routers = {};
 
 window.app = {};
 window.routers = {};
