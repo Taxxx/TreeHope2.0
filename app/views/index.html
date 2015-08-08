@@ -73,10 +73,20 @@
         </ul>
     </nav>
 
-    <form action="" style="display:none">
+    
+    <form id    =   ""
+        enctype =   "multipart/form-data"
+        action  =   "" 
+        style   =   "display:none"
+        method  =   "post"
+    >
         <p><label for="titulo">Título</label><input name="titulo" type="text"></p>
         <p><label for="autor">Autor</label><input name="autor" type="text"></p>
         <p><label for="tag">Tag</label><input name="tag" type="text"></p>
+        
+        <p><label for="file">Tag</label><input type="file" name="file"></p>
+
+        
         <input type="submit" value="Publicar">
     </form>
 
@@ -100,7 +110,7 @@
             <div class="detalles">
                 <h2 class="titulo"><%= title %></h2>
                 <p class="autor">
-                    por <a href="#"><%= user %></a>
+                    por <a href="#"><!--%= user %></a-->
                 </p>
                 <a class="tag" href="#"><%= tag %></a>
                 <p class="fecha">hace <strong>20</strong> min</p>

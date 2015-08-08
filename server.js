@@ -5,6 +5,8 @@ var express = require('express'),
 	uuid    = require('node-uuid'),
 	mongoose = require('mongoose'),
 	database = require('./config/database'),
+	_ = require('underscore'),
+	multer  = require('multer'),
 	Post = require('./app/models/post');
 
 
@@ -46,9 +48,41 @@ app.use(express.methodOverride());
 // Static files
 app.use( express.static('./public') );
 
+//Configure the multer
+app.use(multer({ dest: './uploads/',
+    rename: function (fieldname, filename) {
+	    return filename+Date.now();
+	},
+	onFileUploadStart: function (file) {
+	  console.log(file.originalname + ' is starting ...')
+	},
+	onFileUploadComplete: function (file) {
+	  console.log(file.fieldname + ' uploaded to  ' + file.path)
+	  done=true;
+	}
+}));
+
 // Routes
 app.get('/posts/', function(req, res){
-	res.send(data);
+
+	Post.find({})
+	.exec(function(err, posts){
+		var postsAsJson = _.map(posts, function(post){
+			return post.toJSON();
+		});
+
+
+		res.send(posts);
+		//res.send(data);
+
+		/*res.render('app', {
+			user: req.session.passport.user,
+			users: users,
+			posts: posts
+		});*/
+	});
+
+	//res.send(data);
 });
 
 app.post('/posts', function (req, res){
@@ -57,34 +91,34 @@ app.post('/posts', function (req, res){
 	//req.body.image = "/img/img3.jpg";
 	//req.body.user  = "Siedrix";
 
-	// create a todo, information comes from AJAX request from Angular
-		debugger;
-		Post.create({
-			id 		 : req.body.id,
-			title 	 : req.body.title,
-			image 	 : req.body.image,
-			username : req.body.username,
-			tag 	 : req.body.tag,
-			votes 	 : req.body.votes,
-			content  : req.body.content,
-			done : false
-		}, 
-		function(err, post) {
-			if (err)
-				res.send(err);
+	var post = new Post({
+		id: 	    req.body.id,
+		title: 	    req.body.title,
+		image:		req.body.image,
+		username: 	req.body.username,
+		tag: 	    req.body.tag,
+		votes:	    req.body.votes,
+		content: 	req.body.content
+	});
 
-			console.log('Verifiquemos la base de datos!!');
-			// get and return all the todos after you create another
-			//getTodos(res);
-			data.push(req.body);
+	post.save(function(err){
+		//debugger;
+		if(err){
+			console.log('Error al guardar --> '+err);
+			res.send(500, err);
+		}
 
-			console.log('posts::create', req.body);
-
-			io.sockets.emit('posts::create', req.body);
-
-			res.send(200, {status:"Ok", id: req.body.id});
+		/*app.io.broadcast('post', {
+			content: post.content,
+			user: req.user.toJSON()
 		});
+		res.redirect('/app');*/
 
+		data.push(req.body);
+		console.log('posts::create', req.body);
+		io.sockets.emit('posts::create', req.body);
+		res.send(200, {status:"Ok", id: req.body.id});
+	});
 	
 });
 

@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var PostSchema =  Schema({
 	id: 	    { type: String },
 	title: 	    { type: String },
-	image:		{ type: Number },
+	image:		{ type: String },
 	username: 	{ type: String },
 	tag: 	    { type: String },
 	votes:	    { type: Number },
@@ -12,4 +12,4 @@ var PostSchema =  Schema({
 
 });
 
-module.exports = mongoose.model('post', PostSchema);
+module.exports = mongoose.model('posts', PostSchema);

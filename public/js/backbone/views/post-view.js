@@ -38,6 +38,7 @@ TreeHope.Views.Post = Backbone.View.extend({
 		this.extendedtemplate = _.template($("#post-extended-template").html());
 	},
 	render: function(){
+		//debugger;
 		var data = this.model.toJSON();
 		//junto data con template
 		var html = this.template(data);
